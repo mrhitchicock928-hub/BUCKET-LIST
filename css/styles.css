@@ -1,10 +1,27 @@
-/* 커스텀 스타일 (Tailwind CSS 보완용) */
+/* ===========================================================
+   나의 버킷 리스트 - 커스텀 스타일 (Tailwind CSS 보완용)
+   고급스럽고 세련된 다크 골드 테마 + 기포 모션 + 아기 마스코트
+   =========================================================== */
 
-/* 그라데이션 배경 */
+:root {
+    --gold: #d4af37;
+    --gold-light: #f3e3aa;
+    --gold-soft: rgba(212, 175, 55, 0.35);
+    --ink: #efe9dd;
+    --ink-muted: #c9bfa6;
+}
+
+html, body {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ---------------------------------------------------------
+   배경 - 깊은 네이비/플럼 톤의 고급스러운 그라데이션
+   --------------------------------------------------------- */
 .gradient-background {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    background: linear-gradient(135deg, #0b0f2e 0%, #1c1440 25%, #2d1b4e 50%, #160f33 75%, #07091c 100%);
+    background-size: 300% 300%;
+    animation: gradientShift 24s ease infinite;
     position: relative;
     overflow-x: hidden;
 }
@@ -16,104 +33,223 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    background: linear-gradient(135deg, #0b0f2e 0%, #1c1440 25%, #2d1b4e 50%, #160f33 75%, #07091c 100%);
+    background-size: 300% 300%;
+    animation: gradientShift 24s ease infinite;
+    z-index: -2;
+}
+
+.gradient-background::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.14), transparent 55%);
     z-index: -1;
+    pointer-events: none;
 }
 
 @keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-/* 카드 스타일 (통계, 폼, 필터) */
+/* ---------------------------------------------------------
+   떠오르는 기포(샴페인 버블) 모션
+   --------------------------------------------------------- */
+.bubbles-layer {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -60px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.12) 55%, rgba(255, 255, 255, 0) 80%);
+    box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.25);
+    opacity: 0;
+    animation-name: bubbleRise;
+    animation-timing-function: ease-in;
+    animation-iteration-count: infinite;
+    animation-duration: var(--dur, 14s);
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes bubbleRise {
+    0% { transform: translate(0, 0); opacity: 0; }
+    8% { opacity: var(--op, 0.4); }
+    92% { opacity: var(--op, 0.4); }
+    100% { transform: translate(var(--drift, 0px), -115vh); opacity: 0; }
+}
+
+/* ---------------------------------------------------------
+   헤더
+   --------------------------------------------------------- */
+.eyebrow {
+    color: var(--gold-light);
+    opacity: 0.85;
+}
+
+.page-title {
+    font-family: 'Noto Serif KR', serif;
+}
+
+.title-gold {
+    background-image: linear-gradient(120deg, #f7e7b4 0%, #d4af37 35%, #fdf6e3 50%, #d4af37 65%, #f7e7b4 100%);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 7s linear infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+.header-divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    position: relative;
+}
+
+.header-divider::before {
+    content: '✦';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold);
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+.subtitle {
+    color: var(--ink-muted);
+}
+
+/* ---------------------------------------------------------
+   카드 스타일 (통계, 폼, 필터)
+   --------------------------------------------------------- */
 .stats-card,
 .form-card,
 .filter-card {
     transition: all 0.3s ease;
+    border-color: var(--gold-soft) !important;
 }
 
 .stats-card:hover,
 .form-card:hover,
 .filter-card:hover {
     backdrop-filter: blur(20px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    border-color: rgba(212, 175, 55, 0.55) !important;
+}
+
+.stat-label {
+    color: var(--ink-muted);
+}
+
+/* ---------------------------------------------------------
+   입력 폼 & 버튼
+   --------------------------------------------------------- */
+.elegant-input {
+    background-color: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--ink);
+}
+
+.elegant-input::placeholder {
+    color: rgba(201, 191, 166, 0.6);
+}
+
+.elegant-input:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.25) !important;
+    border-color: var(--gold);
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, #f0cf6b 0%, #d4af37 50%, #b8860b 100%);
+    color: #2b220a;
+    font-weight: 600;
+}
+
+.btn-gold:hover {
+    background: linear-gradient(135deg, #f7e1a0 0%, #e0bd4e 50%, #c6951b 100%);
 }
 
 /* 필터 버튼 활성화 스타일 */
 .filter-btn {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.06);
+    color: var(--ink);
+    border: 1px solid rgba(212, 175, 55, 0.25);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
 }
 
 .filter-btn:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(212, 175, 55, 0.18);
+    border-color: rgba(212, 175, 55, 0.5);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .filter-btn.active {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+    background: linear-gradient(135deg, #f0cf6b 0%, #d4af37 50%, #b8860b 100%);
+    color: #2b220a;
+    border-color: rgba(212, 175, 55, 0.6);
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.35);
 }
 
-/* 버킷 리스트 항목 애니메이션 */
+/* ---------------------------------------------------------
+   버킷 리스트 항목
+   --------------------------------------------------------- */
 .bucket-item {
-    animation: slideIn 0.3s ease-out;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+    animation: slideIn 0.35s ease-out;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
     backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(212, 175, 55, 0.2) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
     transition: all 0.3s ease !important;
     padding: 1.25rem !important;
 }
 
 .bucket-item:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%) !important;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2) !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35) !important;
     transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(212, 175, 55, 0.45) !important;
 }
 
 @keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* 완료된 항목 스타일 */
 .bucket-item .line-through {
     text-decoration: line-through;
-    opacity: 0.6;
-    color: #9ca3af !important;
+    opacity: 0.55;
+    color: #a99f8a !important;
 }
 
 /* 버킷 항목 텍스트 색상 */
 .bucket-item p {
-    color: #ffffff !important;
+    color: var(--ink) !important;
 }
 
 .bucket-item .text-gray-400 {
-    color: #d1d5db !important;
+    color: var(--ink-muted) !important;
 }
 
 /* 체크박스 호버 효과 */
@@ -125,23 +261,28 @@
     transform: scale(1.2);
 }
 
+.bucket-item button[onclick*="Edit"],
+.bucket-item button[onclick*="Delete"] {
+    border-radius: 9999px;
+}
+
 /* 스크롤바 스타일 (Chrome, Safari) */
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(212, 175, 55, 0.4);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(212, 175, 55, 0.6);
 }
 
 /* 모바일 반응형 */
@@ -230,17 +371,12 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.35);
     transition: left 0.3s ease;
 }
 
 .btn-primary:hover::before {
     left: 100%;
-}
-
-/* 입력 필드 포커스 효과 */
-input:focus {
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3) !important;
 }
 
 /* 버튼 호버 효과 */
@@ -249,7 +385,7 @@ button {
 }
 
 button:hover {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
 /* 버튼 클릭 효과 */
@@ -261,56 +397,55 @@ button:active {
 .bucket-item button[onclick*="Edit"]:hover,
 .bucket-item button[onclick*="Delete"]:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);
 }
 
 /* 빈 상태 메시지 애니메이션 */
 #emptyState {
     animation: fadeIn 0.5s ease-in;
-    color: #e5e7eb !important;
+    color: var(--ink-muted) !important;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-/* 모달 백드롭 애니메이션 */
+/* ---------------------------------------------------------
+   수정 모달
+   --------------------------------------------------------- */
 #editModal {
     animation: fadeIn 0.2s ease-in;
     backdrop-filter: blur(5px);
 }
 
-#editModal > div {
+.modal-card {
     animation: scaleIn 0.2s ease-out;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%) !important;
+    background: linear-gradient(135deg, rgba(253, 250, 240, 0.97) 0%, rgba(245, 238, 219, 0.92) 100%);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--gold-soft);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+}
+
+.modal-title {
+    font-family: 'Noto Serif KR', serif;
+    color: #3a2e12;
 }
 
 #editModal input {
     background-color: rgba(255, 255, 255, 0.9) !important;
-    border-color: rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    color: #2b220a;
 }
 
 #editModal input:focus {
     background-color: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.3) !important;
 }
 
 @keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.92);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 /* 통계 숫자 애니메이션 */
@@ -331,12 +466,78 @@ button:active {
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15) !important;
 }
 
-#editModal .bg-blue-600 {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
-    transition: all 0.3s ease;
+#editModal .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.45) !important;
 }
 
-#editModal .bg-blue-600:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4) !important;
+/* ---------------------------------------------------------
+   jslove0514 풍선을 든 아기 마스코트
+   --------------------------------------------------------- */
+.baby-mascot {
+    position: static;
+    width: 120px;
+    margin: 2.5rem auto 0;
+    cursor: pointer;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+    transition: transform 0.2s ease;
+    animation: babyIntro 0.8s ease-out;
+}
+
+/* 데스크탑/태블릿: 콘텐츠를 가리지 않는 좌측 여백에 고정 표시 */
+@media (min-width: 641px) {
+    .baby-mascot {
+        position: fixed;
+        left: 16px;
+        bottom: 8px;
+        width: 130px;
+        margin: 0;
+        z-index: 45;
+    }
+}
+
+.baby-mascot svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.baby-mascot:hover {
+    transform: scale(1.08);
+}
+
+.baby-bob {
+    animation: babyBob 3.2s ease-in-out infinite;
+    transform-box: view-box;
+}
+
+.baby-mascot.jump .baby-bob {
+    animation: babyJump 0.6s ease-in-out;
+}
+
+.balloon-swing {
+    animation: balloonSwing 2.6s ease-in-out infinite;
+    transform-box: view-box;
+}
+
+@keyframes babyIntro {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes babyBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes babyJump {
+    0% { transform: translateY(0) scale(1, 1); }
+    30% { transform: translateY(-26px) scale(1.05, 0.95); }
+    60% { transform: translateY(2px) scale(0.97, 1.04); }
+    100% { transform: translateY(0) scale(1, 1); }
+}
+
+@keyframes balloonSwing {
+    0%, 100% { transform: rotate(-9deg); }
+    50% { transform: rotate(9deg); }
 }
